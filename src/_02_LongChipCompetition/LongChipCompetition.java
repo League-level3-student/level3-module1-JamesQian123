@@ -14,7 +14,25 @@ public class LongChipCompetition {
     private ArrayList<Beatle> theBeatles = new ArrayList<Beatle>();
 
     public static void main(String[] args) {
+    	double longestChip = 0;
+    	Beatle winner = null;
         LongChipCompetition lcc = new LongChipCompetition();
+        lcc.initializeBeatles();
+        ArrayList<Beatle> members = lcc.getTheBand();
+        for(int i = 0; i < members.size(); i++) {
+        	ArrayList<Chip> currentChips = members.get(i).getChips();
+        	for(int j = 0; j < currentChips.size(); j++) {
+        		if(currentChips.get(j).getLength() > longestChip) {
+        			winner = members.get(i);
+        			longestChip = currentChips.get(j).getLength();
+        	}
+        		
+        	}
+        	
+        }
+        System.out.println("The winner is " + winner.getName() + " the length of their chip is " + longestChip);
+        
+        
 
     }
 
