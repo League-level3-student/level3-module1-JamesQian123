@@ -24,8 +24,8 @@ public class ArrayListRemove {
     //    ArrayList
     public static ArrayList<Stuff> cleanOutTheYard( ArrayList<Stuff> yard ) {
         for(int i = 0; i < yard.size(); i++) {
-        	if(yard.get(i).type .equals("dirt")) {
-        		
+        	if(yard.get(i).type .equalsIgnoreCase("dirt")) {
+        		yard.remove(i);
         	}
         }
         return yard;
@@ -34,7 +34,11 @@ public class ArrayListRemove {
     // 2. Write a method that removes the hash tag ('#') characters from the
     //    ArrayList and returns it
     public static ArrayList<Character> removeHashTags(ArrayList<Character> list) {
-
+    	for(int i = 0; i < list.size(); i++) {
+    		if(list.get(i).TYPE .equals("#")) {
+    			list.remove(i);
+    		}
+    	}
         return list;
     }
 }
