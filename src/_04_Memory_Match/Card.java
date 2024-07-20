@@ -26,7 +26,7 @@ public class Card extends JButton {
     private static String faceDownImageFilename = cardImagesPath + "B1.png";
     public static ImageIcon faceDownIcon = null;;
 
-    public Card( int value ) {
+    public Card(int value) {
         this.value = value;
         setup();
     }
