@@ -24,13 +24,13 @@ public class RetroSun extends PApplet {
     @Override
     public void settings() {
         // 1. Set the size of your sketch to at least 800 width, 600 height
-        
+        size(800,600);
     }
 
     @Override
     public void setup() {
         // 2. Set bgColor as the background color
-        
+        background(bgColor);
     }
 
     @Override
@@ -45,13 +45,18 @@ public class RetroSun extends PApplet {
 
         // Do you see a yellow sun like in the 1st image?
         // If not, fix your code before proceeding.
-
-        
+    	fill(sunColors[0]);
+    	ellipse(400,270,480,480);
+        noStroke();
         /*
          * PART 2: Drawing a color gradient on the sun
          *
          * This will make the sun have gradually different colors from the top to bottom
          */
+        loadPixels();
+        for(int i = 0;)
+        	
+        
 
         // Call the loadPixels() method to put all the pixel colors into
         // the pixels[] array
