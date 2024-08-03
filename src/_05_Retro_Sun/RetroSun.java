@@ -1,6 +1,7 @@
 package _05_Retro_Sun;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -12,233 +13,290 @@ import processing.core.PApplet;
  * see final image and what each step should look like.
  */
 public class RetroSun extends PApplet {
-    static final int WIDTH = 800;
-    static final int HEIGHT = 600;
-    
-   
-    Rectangle rect;
-    ArrayList<Rectangle> rects = new ArrayList();
-    
+	static final int WIDTH = 800;
+	static final int HEIGHT = 600;
 
-    // RGB colors
-    int[] sunColors = {
-            color(212, 202, 11), color(214, 198, 30), color(211, 170, 26),
-            color(216, 157, 51), color(217, 124, 64), color(213, 104, 81),
-            color(212, 51, 98), color(215, 29, 121), color(217, 11, 139),
-            color(217, 0, 151) };
 
-    int bgColor = color(31, 0, 48);
+	Rectangle rect;
+	ArrayList<Rectangle> rects = new ArrayList<>();
+	Star star;
+	ArrayList<Star> stars = new ArrayList<>();
 
-    @Override
-    public void settings() {
-        // 1. Set the size of your sketch to at least 800 width, 600 height
-        size(800,600);
-    }
 
-    @Override
-    public void setup() {
-        // 2. Set bgColor as the background color
-//    	 rect = new Rectangle(160,510,480,40);
-    	
-        background(bgColor);
-        
-        for(int i = 0; i < 5; i++) {
-        	rect = new Rectangle(160,510,480,40);
-        	rects.add(rect);
-        	
-        }
-        
-    }
+	// RGB colors
+	int[] sunColors = {
+			color(212, 202, 11), color(214, 198, 30), color(211, 170, 26),
+			color(216, 157, 51), color(217, 124, 64), color(213, 104, 81),
+			color(212, 51, 98), color(215, 29, 121), color(217, 11, 139),
+			color(217, 0, 151) };
 
-    @Override
-    public void draw() {
-        /*
-         * PART 1: Drawing the sun
-         */
+	int bgColor = color(31, 0, 48);
 
-        // Draw an ellipse for the sun in the center of the window
-        // Use fill(sunColors[0]) to make it yellow
-        // Use noStroke() to remove the black outline
+	@Override
+	public void settings() {
+		// 1. Set the size of your sketch to at least 800 width, 600 height
+		size(800,600);
+	}
 
-        // Do you see a yellow sun like in the 1st image?
-        // If not, fix your code before proceeding.
-    	fill(sunColors[0]);
-    	noStroke();
-    	ellipse(400,270,480,480);
-        
-        /*
-         * PART 2: Drawing a color gradient on the sun
-         *
-         * This will make the sun have gradually different colors from the top to bottom
-         */
-    
-        
-        	
-        
+	@Override
+	public void setup() {
+		// 2. Set bgColor as the background color
+		//    	 rect = new Rectangle(160,510,480,40);
 
-        // Call the loadPixels() method to put all the pixel colors into
-        // the pixels[] array
-        // https://processing.org/reference/loadPixels_.html
-    loadPixels();
-        // We want to change the color of our sun so use an if statement
-        // to check if the pixel is the color of the yellow circle.
-    for(int i = 0; i < pixels.length; i++) {
-    	if(pixels[i] == sunColors[0]) {
-    		int y = i/width;
-    		float step = map(y, 30, 510, 0, 1);
-    		pixels[i] = interpolateColor(sunColors,step);
-    		}
-    }
-    updatePixels();
-        // If pixel[i] is the same color as the color of our circle (sunColors[0]),
-        // we need to map the pixel to a color in our sunColors[] array
-        // (see 2nd gradient image in RetroSun.html)
 
-        // The top of the sun is yellow (sunColors[0]) and the bottom
-        // of the sun is red (sunColors[sunColors.length - 1]
 
-        // In order to get the right color, the y value from the top of
-        // the sun to the bottom has to be mapped to a range from 0 to 1.
-        // Use the map() function to do that:
-        // int y = i / width;
-        // float step = map(y, sunTopY, sunBottomY, 0, 1);
+		for(int i = 0; i < 6; i++) {
+			rect = new Rectangle(160,510+40*i,480,40);
+			rects.add(rect);
 
-        // Call interpolateColor(sunColors, step) and save the color
-        // variable that's returned
+		}
+		for(int i = 0; i<1000; i++) {
 
-        // Set pixels[i] to the returned color
+			stars.add(new Star((int)random(0,800),(int)random(0,600),Color.white));
+		}
 
-        // Call updatePixels() after your loop through all the pixels to
-        // update the pixel colors
-        // https://processing.org/reference/updatePixels_.html
+	}
 
-        
-        /*
-         * PART 3: Drawing the missing sections at the bottom of the sun
-         *
-         * The missing parts of the sun are created by drawing rectangles over the sun
-         * with the same color as the background.
-         */
+	@Override
+	public void draw() {
+		/*
+		 * PART 1: Drawing the sun
+		 */
+		background(bgColor);
+		for(int i = 0; i < stars.size(); i++) {
+			stars.get(i).draw();
+		}
+		// Draw an ellipse for the sun in the center of the window
+		// Use fill(sunColors[0]) to make it yellow
+		// Use noStroke() to remove the black outline
 
-        // Set the fill color to the background color
-    	fill(bgColor);
-        // To draw each rectangle we need to find its x, y, width, height
-        // *The y position can be any value within the sun:
-        //  float y = width / 2;
-        // *The height can be any value you choose:
-        //  float h = 40;
-        // *The x position can be the center of the sun's x position minus the radius:
-        //  float x = sunCenterX - sunRadius
-        // *The width can be 2 times the radius
-        //  float w = 2 * sunRadius
-//        float y = width/2;
-//        float h = 40; 
-//        float x = 400 - 240; 
-//        float w = 2 * 240;
-      
-        // Do you see a section missing from the sun like in the 3rd image?
-    //	rect(rect.x,rect.y,rect.w,rect.h);
-        
-        /*
-         * PART 4: Moving the missing sun sections
-         *
-         * To move a section upwards each rectangle's y value needs to decrease. To make
-         * the section get smaller, its height needs to also decrease.
-         */
+		// Do you see a yellow sun like in the 1st image?
+		// If not, fix your code before proceeding.
+		fill(sunColors[0]);
+		noStroke();
+		ellipse(400,270,480,480);
 
-        // Decrease the y variable of the rectangular section created in PART 3.
-        // If there isn't a variable, declare a float variable OUTSIDE of the
-        // draw function AND initialize it in the setup() function.
-        
-        // Do you see the rectangle moving upwards?
+		/*
+		 * PART 2: Drawing a color gradient on the sun
+		 *
+		 * This will make the sun have gradually different colors from the top to bottom
+		 */
 
-        // Pick a y positon to be the location when the sections stop moving up.
-        // If the rectangle's y positon is above this, move the rectangle's
-        // y position back to the bottom of the sun.
-        
-        // Does the rectangle move back to the bottom?
 
-        // Decrease the the height of the rectangle as it moves upwards.
-        // Similar to the y positon, a float variable for the height needs to be
-        // created if it doesn't already exist.
-        
-        // Adjust the amount to decrease so that it disappears close to the top.
-        // HINT: You can use the map() function again,
-        // h = map(y, missingSectionTopY, missingSectionBottomY, 1, 40);
-        
-        // The map() function will make the value of h = 1 if y is at the top,
-        // and h = 40 if y is at the bottom.
 
-      
-        /*
-         * PART 5: Managing the missing sun sections
-         *
-         * Using a list to manage moving multiple missing sun sections
-         */
 
-        // Figure out how to create the other missing sun sections using the
-        // code you wrote for the 1 missing sun section.
-        // HINT: You can use the Rectangle class defined below to create
-        // a list of Rectangles.
-        
-        for(int i = 0; i < rects.size(); i++) {
-        	Rectangle r = rects.get(i);
-        	
-        	rect(r.x,r.y,r.w,r.h);
-        	if(frameCount%2 == 1) {
-            	r.y--;
-            }
-        	if(r.y == 220) {
-            	r.y = 510;
-            }
-        	r.h = map(r.y,220,510,1,40);
-        	
-        	
-        }
-        
-        /*
-         * PART 6: Adding extras
-         *
-         * If you want to make your retro sun look more unique, try adding
-         * reflections and stars. See RetroSun.html in this folder for some
-         * example classes
-         */
-    }
 
-    static public void main(String[] passedArgs) {
-        PApplet.main(RetroSun.class.getName());
-    }
+		// Call the loadPixels() method to put all the pixel colors into
+		// the pixels[] array
+		// https://processing.org/reference/loadPixels_.html
+		loadPixels();
+		// We want to change the color of our sun so use an if statement
+		// to check if the pixel is the color of the yellow circle.
+		for(int i = 0; i < pixels.length; i++) {
+			if(pixels[i] == sunColors[0]) {
+				int y = i/width;
+				float step = map(y, 30, 510, 0, 1);
 
-    /*********************** DO NOT MODIFY THE CODE BELOW ********************/
 
-    // Placed here so it can be used by all classes
-    // Variable step should be between 0 and 1, inclusive
-    int interpolateColor(int[] arr, float step) {
-        int sz = arr.length;
+				int pixelY = i/width;
+				int pixelX = i%width;
+				Point point = new Point(pixelX, pixelY);
+				
+				boolean intersects = false;
+				
+				for(Rectangle r : rects) {
+					if (pixelX >= r.x && pixelX <= r.x + r.w && pixelY >= r.y && pixelY <= r.y + r.h) {
+						intersects = true;
+						break;
+					}
+				}
+				
+				if( intersects) {
+					pixels[i] = bgColor;
+				}else {
+					pixels[i] = interpolateColor(sunColors,step);
+				}
+			}
+		}
+		updatePixels();
+		// If pixel[i] is the same color as the color of our circle (sunColors[0]),
+		// we need to map the pixel to a color in our sunColors[] array
+		// (see 2nd gradient image in RetroSun.html)
 
-        if (sz == 1 || step <= 0.0) {
-            return arr[0];
-        } else if (step >= 1.0) {
-            return arr[sz - 1];
-        }
+		// The top of the sun is yellow (sunColors[0]) and the bottom
+		// of the sun is red (sunColors[sunColors.length - 1]
 
-        float scl = step * (sz - 1);
-        int i = (int) scl;
+		// In order to get the right color, the y value from the top of
+		// the sun to the bottom has to be mapped to a range from 0 to 1.
+		// Use the map() function to do that:
+		// int y = i / width;
+		// float step = map(y, sunTopY, sunBottomY, 0, 1);
 
-        return lerpColor(arr[i], arr[i + 1], scl - i);
-    }
+		// Call interpolateColor(sunColors, step) and save the color
+		// variable that's returned
 
-    // Feel free to use this class to create a list of missing
-    // sections in the sun, for example:
-    // ArrayList<Rectangle> sections = new ArrayList<Rectangle>();
-    class Rectangle {
-        float x, y, w, h;
+		// Set pixels[i] to the returned color
 
-        Rectangle(float x, float y, float w, float h) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-        }
-    }
+		// Call updatePixels() after your loop through all the pixels to
+		// update the pixel colors
+		// https://processing.org/reference/updatePixels_.html
+
+
+		/*
+		 * PART 3: Drawing the missing sections at the bottom of the sun
+		 *
+		 * The missing parts of the sun are created by drawing rectangles over the sun
+		 * with the same color as the background.
+		 */
+
+		// Set the fill color to the background color
+		fill(bgColor);
+		// To draw each rectangle we need to find its x, y, width, height
+		// *The y position can be any value within the sun:
+		//  float y = width / 2;
+		// *The height can be any value you choose:
+		//  float h = 40;
+		// *The x position can be the center of the sun's x position minus the radius:
+		//  float x = sunCenterX - sunRadius
+		// *The width can be 2 times the radius
+		//  float w = 2 * sunRadius
+		//        float y = width/2;
+		//        float h = 40; 
+		//        float x = 400 - 240; 
+		//        float w = 2 * 240;
+
+		// Do you see a section missing from the sun like in the 3rd image?
+		//	rect(rect.x,rect.y,rect.w,rect.h);
+
+		/*
+		 * PART 4: Moving the missing sun sections
+		 *
+		 * To move a section upwards each rectangle's y value needs to decrease. To make
+		 * the section get smaller, its height needs to also decrease.
+		 */
+
+		// Decrease the y variable of the rectangular section created in PART 3.
+		// If there isn't a variable, declare a float variable OUTSIDE of the
+		// draw function AND initialize it in the setup() function.
+
+		// Do you see the rectangle moving upwards?
+
+		// Pick a y positon to be the location when the sections stop moving up.
+		// If the rectangle's y positon is above this, move the rectangle's
+		// y position back to the bottom of the sun.
+
+		// Does the rectangle move back to the bottom?
+
+		// Decrease the the height of the rectangle as it moves upwards.
+		// Similar to the y positon, a float variable for the height needs to be
+		// created if it doesn't already exist.
+
+		// Adjust the amount to decrease so that it disappears close to the top.
+		// HINT: You can use the map() function again,
+		// h = map(y, missingSectionTopY, missingSectionBottomY, 1, 40);
+
+		// The map() function will make the value of h = 1 if y is at the top,
+		// and h = 40 if y is at the bottom.
+
+
+		/*
+		 * PART 5: Managing the missing sun sections
+		 *
+		 * Using a list to manage moving multiple missing sun sections
+		 */
+
+		// Figure out how to create the other missing sun sections using the
+		// code you wrote for the 1 missing sun section.
+		// HINT: You can use the Rectangle class defined below to create
+		// a list of Rectangles.
+
+		for(int i = 0; i < rects.size(); i++) {
+			Rectangle r = rects.get(i);
+
+		//	rect(r.x,r.y,r.w,r.h);
+			if(frameCount%2 == 1) {
+				r.y--;
+			}
+			if(r.y == 300) {
+				r.y = 510;
+			}
+			r.h = map(r.y,300,510,1,40);
+
+
+		}
+
+		/*
+		 * PART 6: Adding extras
+		 *
+		 * If you want to make your retro sun look more unique, try adding
+		 * reflections and stars. See RetroSun.html in this folder for some
+		 * example classes
+		 */
+	}
+
+	static public void main(String[] passedArgs) {
+		PApplet.main(RetroSun.class.getName());
+	}
+
+	/*********************** DO NOT MODIFY THE CODE BELOW ********************/
+
+	// Placed here so it can be used by all classes
+	// Variable step should be between 0 and 1, inclusive
+	int interpolateColor(int[] arr, float step) {
+		int sz = arr.length;
+
+		if (sz == 1 || step <= 0.0) {
+			return arr[0];
+		} else if (step >= 1.0) {
+			return arr[sz - 1];
+		}
+
+		float scl = step * (sz - 1);
+		int i = (int) scl;
+
+		return lerpColor(arr[i], arr[i + 1], scl - i);
+	}
+
+	// Feel free to use this class to create a list of missing
+	// sections in the sun, for example:
+	// ArrayList<Rectangle> sections = new ArrayList<Rectangle>();
+	class Rectangle {
+		float x, y, w, h;
+
+		Rectangle(float x, float y, float w, float h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+		}
+	}
+	class Star {
+		int x;
+		int y;
+		Color starColor;
+		float startAlpha;
+		float alpha;
+		float diameter;
+
+		Star(int x, int y, Color col) {
+			this.x = x;
+			this.y = y;
+			starColor = col;
+			this.diameter = random(0.1f, 3f);
+			this.startAlpha = random(1, 200);
+			this.alpha = startAlpha;
+		}
+
+		void setAlpha(int alpha){
+			this.alpha = constrain(alpha, startAlpha, 255);
+		}
+
+		void draw() {
+			noStroke();
+			fill(starColor.getRGB(), alpha);
+			float blink = random(0f, 0.8f);
+			ellipse(x, y, diameter + blink, diameter + blink);
+		}
+
+	}
 }
