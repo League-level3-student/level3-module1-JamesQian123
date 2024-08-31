@@ -45,6 +45,7 @@ public class MeetingScheduler {
         	for(int j = 0; j<times.size(); j++) {
         		if(tmes.contains(times.get(j))) {
         			available.addAvailability(days.get(i), times.get(j));
+        			available.printSchedule();
         		}
         	}
 //        		if(person1schedule.get(days.get(i)) == person2schedule.get(days.get(i))) {
@@ -53,6 +54,7 @@ public class MeetingScheduler {
 //        		}
         		
         	}
+		
         
         
     

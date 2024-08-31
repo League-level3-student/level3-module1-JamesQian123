@@ -1,6 +1,15 @@
 package _08_California_Weather;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /*
  * OBJECTIVE:
@@ -27,11 +36,29 @@ import java.util.HashMap;
  * temperature, you can get a free API key at: https://openweathermap.org/api
  */
 
-public class CaliforniaWeather {
-    
+public class CaliforniaWeather implements ActionListener {
+	JFrame frame = new JFrame();
+    JPanel panel = new JPanel();
+    JButton button1 = new JButton();
+    JButton button2 = new JButton();
+    JButton button3 = new JButton();
+    HashMap<String, WeatherData> weatherData = Utilities.getWeatherData();
     void start() {
-        HashMap<String, WeatherData> weatherData = Utilities.getWeatherData();
-        
+      
+       
+        frame.setVisible(true);
+        frame.setSize(800,600);
+        frame.add(panel);
+        panel.add(button1);
+        panel.add(button2);
+        panel.add(button3);
+        button1.setText("City");
+        button2.setText("Weather Condition");
+        button3.setText("Min and Max Temp");
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // All city keys have the first letter capitalized of each word
         String cityName = Utilities.capitalizeWords( "National City" );
         WeatherData datum = weatherData.get(cityName);
@@ -41,5 +68,31 @@ public class CaliforniaWeather {
         } else {
             System.out.println(cityName + " is " + datum.weatherSummary + " with a temperature of " + datum.temperatureF + " F");
         }
-    }
+    
+        }
+    
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == button1) {
+			 String city = JOptionPane.showInputDialog("What city's weather do you want to search up");
+			 city = Utilities.capitalizeWords(city);
+		        if(weatherData.containsKey(city)) {
+		        	WeatherData weather = weatherData.get(city);
+		    
+		        	JOptionPane.showMessageDialog(null, city + "'s weather is " + weather.weatherSummary + " the overall temperature is " + weather.temperatureF);
+		}
+	}
+		if(e.getSource() == button2) {
+			String forecast = JOptionPane.showInputDialog("What weather condition are you looking for");
+			ArrayList<WeatherData> cities = new ArrayList<WeatherData>();
+			forecast = Utilities.capitalizeWords(forecast);
+			for(Entry<String, WeatherData> temp: weatherData.entrySet())
+				if(weatherData.(i))  {
+					cities.add(weatherData.get(i));
+			}
+			
+		}
+	}
 }
