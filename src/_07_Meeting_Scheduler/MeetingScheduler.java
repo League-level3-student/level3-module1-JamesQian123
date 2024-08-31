@@ -1,5 +1,8 @@
 package _07_Meeting_Scheduler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.JOptionPane;
 
 public class MeetingScheduler {
@@ -24,8 +27,35 @@ public class MeetingScheduler {
      * Assume both schedules are in the same time zones
      */
     public static Schedule getMutualAvailability(Schedule person1, Schedule person2) {
-        JOptionPane.showInputDialog("What times are you available");
+    	int time = 0;
+        Schedule available = new Schedule();
+        ArrayList<String> days = new ArrayList<String>();
+        days.add("Monday");
+        days.add("Tuesday");
+        days.add("Wednesday");
+        days.add("Thursday");
+        days.add("Friday");
+        days.add("Saturday");
+        days.add("Sunday");
+        HashMap<String, ArrayList<Integer>> person1schedule = person1.getSchedule();
+        HashMap<String, ArrayList<Integer>> person2schedule = person2.getSchedule();
+;        for(int i = 0; i < days.size(); i++) {
+        	ArrayList<Integer> times = person1schedule.get(days.get(i));
+        	ArrayList<Integer> tmes = person2schedule.get(days.get(i));
+        	for(int j = 0; j<times.size(); j++) {
+        		if(tmes.contains(times.get(j))) {
+        			available.addAvailability(days.get(i), times.get(j));
+        		}
+        	}
+//        		if(person1schedule.get(days.get(i)) == person2schedule.get(days.get(i))) {
+//        			time = person1schedule.get(days.get(i));
+//        			available.addAvailability(days.get(i),);
+//        		}
+        		
+        	}
         
-        return null;
+        
+    
+		return available;
     }
 }
