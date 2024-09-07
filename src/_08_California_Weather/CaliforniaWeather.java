@@ -38,61 +38,90 @@ import javax.swing.JPanel;
 
 public class CaliforniaWeather implements ActionListener {
 	JFrame frame = new JFrame();
-    JPanel panel = new JPanel();
-    JButton button1 = new JButton();
-    JButton button2 = new JButton();
-    JButton button3 = new JButton();
-    HashMap<String, WeatherData> weatherData = Utilities.getWeatherData();
-    void start() {
-      
-       
-        frame.setVisible(true);
-        frame.setSize(800,600);
-        frame.add(panel);
-        panel.add(button1);
-        panel.add(button2);
-        panel.add(button3);
-        button1.setText("City");
-        button2.setText("Weather Condition");
-        button3.setText("Min and Max Temp");
-        button1.addActionListener(this);
-        button2.addActionListener(this);
-        button3.addActionListener(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // All city keys have the first letter capitalized of each word
-        String cityName = Utilities.capitalizeWords( "National City" );
-        WeatherData datum = weatherData.get(cityName);
-        
-        if( datum == null ) {
-            System.out.println("Unable to find weather data for: " + cityName);
-        } else {
-            System.out.println(cityName + " is " + datum.weatherSummary + " with a temperature of " + datum.temperatureF + " F");
-        }
-    
-        }
-    
+	JPanel panel = new JPanel();
+	JButton button1 = new JButton();
+	JButton button2 = new JButton();
+	JButton button3 = new JButton();
+	HashMap<String, WeatherData> weatherData = Utilities.getWeatherData();
+
+	void start() {
+
+		frame.setVisible(true);
+		frame.setSize(800, 600);
+		frame.add(panel);
+		panel.add(button1);
+		panel.add(button2);
+		panel.add(button3);
+		button1.setText("City");
+		button2.setText("Weather Condition");
+		button3.setText("Min and Max Temp");
+		button1.addActionListener(this);
+		button2.addActionListener(this);
+		button3.addActionListener(this);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// All city keys have the first letter capitalized of each word
+		String cityName = Utilities.capitalizeWords("National City");
+		WeatherData datum = weatherData.get(cityName);
+
+		if (datum == null) {
+			System.out.println("Unable to find weather data for: " + cityName);
+		} else {
+			System.out.println(
+					cityName + " is " + datum.weatherSummary + " with a temperature of " + datum.temperatureF + " F");
+		}
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == button1) {
-			 String city = JOptionPane.showInputDialog("What city's weather do you want to search up");
-			 city = Utilities.capitalizeWords(city);
-		        if(weatherData.containsKey(city)) {
-		        	WeatherData weather = weatherData.get(city);
-		    
-		        	JOptionPane.showMessageDialog(null, city + "'s weather is " + weather.weatherSummary + " the overall temperature is " + weather.temperatureF);
-		}
-	}
-		if(e.getSource() == button2) {
-			String forecast = JOptionPane.showInputDialog("What weather condition are you looking for");
-			ArrayList<WeatherData> cities = new ArrayList<WeatherData>();
-			forecast = Utilities.capitalizeWords(forecast);
-			for(Entry<String, WeatherData> temp: weatherData.entrySet())
-				if(weatherData.(i))  {
-					cities.add(weatherData.get(i));
+		if (e.getSource() == button1) {
+			String city = JOptionPane.showInputDialog("What city's weather do you want to search up");
+			city = Utilities.capitalizeWords(city);
+			if (weatherData.containsKey(city)) {
+				WeatherData weather = weatherData.get(city);
+
+				JOptionPane.showMessageDialog(null, city + "'s weather is " + weather.weatherSummary
+						+ " the overall temperature is " + weather.temperatureF);
 			}
-			
+		}
+		if (e.getSource() == button2) {
+			String forecast = JOptionPane.showInputDialog("What weather condition are you looking for");
+			ArrayList<String> cities = new ArrayList<String>();
+			String theCities = "The cities that have" + forecast + " weather is: \n";
+			for (Entry<String, WeatherData> temp : weatherData.entrySet()) {
+				if (temp.getValue().weatherSummary.toLowerCase().contains(forecast.toLowerCase())) {
+					cities.add(temp.getKey());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "No weather data for that");
+				}
+			}
+			for (int i = 0; i < cities.size(); i++) {
+				theCities += cities.get(i) + "\n";
+			}
+			JOptionPane.showMessageDialog(null, theCities);
+		}
+		if(e.getSource() == button3) {
+			ArrayList<String> cities = new ArrayList<String>();
+			String minTempAsString = JOptionPane.showInputDialog("What is the minimum temperature you want to have?");
+			String maxTempAsString = JOptionPane.showInputDialog("What is the maximum temperature you want to have?");
+			Double minTemp = Double.parseDouble(minTempAsString);
+			Double maxTemp = Double.parseDouble(maxTempAsString);
+			String theCities = "The cities that have thier minimum temperature as " + minTemp + " and the cities that have thier maximum temperature as " + maxTemp + " are: \n";
+			for(Entry<String, WeatherData> temp: weatherData.entrySet()) {
+				if(temp.getValue().temperatureF < maxTemp && temp.getValue().temperatureF > minTemp) {
+					cities.add(temp.getKey());
+				}
+				
+			}
+			if(cities.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No weather data available");
+			}
+			for(int i = 0; i < cities.size(); i++) {
+				theCities += cities.get(i) + "\n";
+			}
+			JOptionPane.showMessageDialog(null, theCities);
 		}
 	}
 }
