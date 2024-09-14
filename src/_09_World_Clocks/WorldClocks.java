@@ -64,9 +64,25 @@ public class WorldClocks implements ActionListener {
        // String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
        // dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
         
-        System.out.println(dateStr);
-
+        //System.out.println(dateStr);
+        
         // Sample starter program
+       
+        
+        //String city = JOptionPane.showInputDialog("What city's time do you want displayed? (Format: San Diego, US)");
+       //timeZone = clockUtil.getTimeZoneFromCityName(city);
+        
+        // This Timer object is set to call the actionPerformed() method every
+        // 1000 milliseconds
+        
+        city = JOptionPane.showInputDialog("What city do you want to display? (Format: San Diego, US");
+    	timeZone = clockUtil.getTimeZoneFromCityName(city);
+    	Calendar calendar = Calendar.getInstance(timeZone);
+    	String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+    	String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+    	dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
+        timer = new Timer(1000, this);
+        timer.start();
         frame = new JFrame();
         panel = new JPanel();
         textArea = new JTextArea();
@@ -79,15 +95,6 @@ public class WorldClocks implements ActionListener {
         addButton.addActionListener(this);
         panel.add(addButton);
         textArea.setText(city + "\n" + dateStr);
-        
-        //String city = JOptionPane.showInputDialog("What city's time do you want displayed? (Format: San Diego, US)");
-       //timeZone = clockUtil.getTimeZoneFromCityName(city);
-        
-        // This Timer object is set to call the actionPerformed() method every
-        // 1000 milliseconds
-        timer = new Timer(1000, this);
-        timer.start();
-        
     }
 
     @Override
@@ -96,18 +103,30 @@ public class WorldClocks implements ActionListener {
         String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
         String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
         timeStr = militaryTime + twelveHourTime;
-        
+      
         System.out.println(timeStr);
         textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
+        
         frame.pack();
         if(arg0.getSource() == addButton) {
-        	String cityClock = JOptionPane.showInputDialog("What city do you want to display? (Format: San Diego, US");
-        	timeZone = clockUtil.getTimeZoneFromCityName(cityClock);
-        	Calendar calendar = Calendar.getInstance(timeZone);
-        	String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        	String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        	dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
-        	times.put(dateStr, timeZone);
+        	JTextArea textArea = new JTextArea();
+        	panel.add(textArea);
+//        	city = JOptionPane.showInputDialog("What city do you want to display? (Format: San Diego, US");
+//        	timeZone = clockUtil.getTimeZoneFromCityName(city);
+//        	Calendar calendar = Calendar.getInstance(timeZone);
+//        	String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+//        	String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+//        	dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
+        
+        	//times.put(dateStr, timeZone);
+        	String city2 = JOptionPane.showInputDialog("What city do you want to display?");
+        	timeZone = clockUtil.getTimeZoneFromCityName(city2);
+        	Calendar calendar2 = Calendar.getInstance(timeZone);
+        	String month2 = calendar2.getDisplayName(calendar2.MONTH, Calendar.LONG, Locale.getDefault());
+        	String dayOfWeek2 = calendar2.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        	String dateStr2 = dayOfWeek2 + " " + month2 + " " + calendar2.get(Calendar.DAY_OF_MONTH) + " " + calendar2.get(Calendar.YEAR);
+        	System.out.println(timeStr);
+            textArea.setText(city2 + "\n" + dateStr2 + "\n" + timeStr);
         }
     }
 }
